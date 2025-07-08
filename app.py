@@ -113,7 +113,7 @@ def notify():
         url = "https://prod-59.japaneast.logic.azure.com:443/workflows/45e0342f8f3f48208cef4d400691a440/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=W5IT3euqOf2L9jMLyeJs4cG9sJCUrbVZZZ5vwA5S3Bg"
         payload = {
             "time": now_time,
-            "message":f"{msg({caller})}"
+            "message":f"{msg}({caller})"
         }
         try:
             requests.post(url,json=payload)
