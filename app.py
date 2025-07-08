@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime
 import pytz
+import requests 
 
 app = Flask(__name__)
 DATA_DIR = "data"
@@ -99,11 +100,26 @@ def notify():
         caller = request.form["caller"]
         msg = request.form["message"]
         notifs = load_notifications()
+        #追加します（ハオ）
+        now_time = datetime.now(pytz.timezone("Asia/Tokyo")).strftime("%H:%M")
+
         notifs.insert(0, {
             "time": datetime.now(pytz.timezone("Asia/Tokyo")).strftime("%H:%M"),
             "message": f"{msg} ({caller})"
         })
         save_notifications(notifs)
+
+        #はおpowerAutomate
+        url = ""
+        payload = {
+            "time": now_time,
+            "message":f"{msg({caller})}"
+        }
+        try:
+            requests.post(url,json=payload)
+        except Exception as e:
+            print("Teamsに送れませんでした:",e)
+        #ここまで
         return redirect("/notify")
     notifs = load_notifications()
     return render_template("notify.html", notifications=notifs)
